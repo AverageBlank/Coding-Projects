@@ -1,4 +1,3 @@
-# {1: ['Adarsh', 16, {'Maths': 55, 'Science': 44, 'Social Science': 33, 'English': 22, 'French': 11, 'Computers': 99}, 264, 44.0]}
 def func_excel(x):
     # Imports
     import xlsxwriter
@@ -42,13 +41,13 @@ def func_excel(x):
         worksheet.write("E1", "Average", cell_format)
 
         while 3*a != n:
-            # Writting Details
+            # Writing Details
             worksheet.write(1+n,0, x[index][0], cell_format)
             worksheet.write(1+n,1, x[index][1], cell_format)
             worksheet.write(1+n,2, x[index][2]['grade'], cell_format)
             worksheet.write(1+n,3, x[index][3], cell_format)
             worksheet.write(1+n,4, x[index][4], cell_format)
-            # Writting Marks
+            # Writing Marks
             if x[index][5] == 1:
                 worksheet.write(1+n,6, "Maths", cell_format)
                 worksheet.write(1+n,7, "Science", cell_format)
