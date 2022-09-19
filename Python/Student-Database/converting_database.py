@@ -18,9 +18,9 @@ def func_excel(x):
             quit()
         elif b == 'yes':
             a = len(x)   # Number of students.
-        d = os.getcwd()
         c = input('What do you want to call the excel file(For example: "example_excel_file")? ')
         sleep(1)
+        d = os.getcwd()
         c = c + '.xlsx'
         print(f'The file "{c}" was created in "{d}"')
 
