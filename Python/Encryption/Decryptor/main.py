@@ -5,7 +5,6 @@ from tkinter import filedialog
 from tkinter import simpledialog
 from tkinter.filedialog import asksaveasfile
 
-
 # Class
 class call5dia(simpledialog.Dialog):
 
@@ -24,7 +23,7 @@ class call5dia(simpledialog.Dialog):
 # Callbacks
 def call1():
     global inp
-    inp =  filedialog.askopenfilename(initialdir = "~",title = "Select file",filetypes = ((
+    inp = filedialog.askopenfilename(initialdir = "~",title = "Select file",filetypes = ((
         ('Text Document', '*.txt'), 
         ('Python Files', '*.py'), ('All Files', '*.*'))))
     file = open(inp, 'r')

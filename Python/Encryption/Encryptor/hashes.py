@@ -1618,4 +1618,4 @@ def lvl3():
         decr = 'n'
     elif a == hash5:
         decr = 'o'
-    return a,decr
+    return a, decr
