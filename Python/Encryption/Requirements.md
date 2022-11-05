@@ -5,5 +5,5 @@
 * You need tkinter to display a gui.
 * To install tkinter: 
 ```
-python3 -m pip install PyMySQL
+python3 -m pip install tk
 ```
