@@ -68,7 +68,8 @@ def MasterPass():
                     mp = input('Please enter your master password: ')
                     i += 1
                     if i == 3:
-                        print('You have had too many unsuccessful attempts, please try again.')
+                        print(
+                            'You have had too many unsuccessful attempts, please try again.')
                         quit()
                     if mp == MP:
                         break
@@ -89,7 +90,8 @@ def MasterPass():
     except ValueError:
         ##### Running this if Master Password not saved #####
         while True:
-            mp = input(f"As this is your first time running this script, please enter a Master Password: ")
+            mp = input(
+                f"As this is your first time running this script, please enter a Master Password: ")
             mp2 = input(f"Please enter it again: ")
             if mp != mp2:
                 continue
@@ -190,7 +192,8 @@ def EditEntry(d, t):
         elif name == 'yes':
             while True:
                 Name = input('What should the name be? ')
-                cur.execute(f"update {d}.{t} set Name='{Name}' where IndexNo={choice}")
+                cur.execute(
+                    f"update {d}.{t} set Name='{Name}' where IndexNo={choice}")
                 break
         break
     ### Email ###
@@ -202,7 +205,8 @@ def EditEntry(d, t):
         elif email == 'yes':
             while True:
                 Email = input('What should the email be? ')
-                cur.execute(f"update {d}.{t} set Email='{Email}' where IndexNo={choice}")
+                cur.execute(
+                    f"update {d}.{t} set Email='{Email}' where IndexNo={choice}")
                 break
         break
     ### Username ###
@@ -214,7 +218,8 @@ def EditEntry(d, t):
         elif username == 'yes':
             while True:
                 Username = input('What should the username be? ')
-                cur.execute(f"update {d}.{t} set Username='{Username}' where IndexNo={choice}")
+                cur.execute(
+                    f"update {d}.{t} set Username='{Username}' where IndexNo={choice}")
                 break
         break
     ### Password ###
@@ -226,7 +231,8 @@ def EditEntry(d, t):
         elif passwd == 'yes':
             while True:
                 Passwd = input('What should the password be? ')
-                cur.execute(f"update {d}.{t} set Password='{Passwd}' where IndexNo={choice}")
+                cur.execute(
+                    f"update {d}.{t} set Password='{Passwd}' where IndexNo={choice}")
                 break
         break
     if Name == '-' and Email == '-' and Username == '-' and Passwd == '-':
@@ -278,12 +284,13 @@ def DelEntry(d, t):
                     print('Please enter a valid choice.')
                     continue
             break
-    
+
     ##### Confirmation #####
     while True:
         cur.execute(f'select Name from {d}.{t} where IndexNo={choice}')
         name = cur.fetchall()[0][0]
-        conf = input(f'Are you sure you want to delete the entry for {name}? ').lower()
+        conf = input(
+            f'Are you sure you want to delete the entry for {name}? ').lower()
         if conf not in ['yes', 'no']:
             continue
         elif conf == 'yes':
@@ -294,8 +301,9 @@ def DelEntry(d, t):
             names = cur.fetchall()
             for _ in names:
                 Names.append(_[0])
-            for index,val in enumerate(Names):
-                cur.execute(f"update {d}.{t} set IndexNo={index+1} where Name='{val}'")
+            for index, val in enumerate(Names):
+                cur.execute(
+                    f"update {d}.{t} set IndexNo={index+1} where Name='{val}'")
             conn.commit()
             ### Confirmation ###
             print(f'The entry for {name} has been successfully deleted!')
@@ -394,6 +402,7 @@ def CopyEntry(d, t):
             print('The password has been successfully copied to your clipboard')
             sleep(1)
             break
+
 
 ####### Variables ###################
 HOME = "~"
