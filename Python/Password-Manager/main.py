@@ -1,8 +1,8 @@
 ################### Imports ###################
-import pymysql                       # For Connecting to MySQL
-from os import name, popen, system   # For Running Commands
-import pyperclip                     # For Copying to Clipboard
-from time import sleep               # For Pausing the Script
+import pymysql                      # For Connecting to MySQL
+from os import name, popen, system  # For Running Commands
+import pyperclip                    # For Copying to Clipboard
+from time import sleep              # For Pausing the Script
 
 
 ################### Functions ###################
@@ -67,12 +67,12 @@ def MasterPass():
                 while True:
                     mp = input('Please enter your master password: ')
                     i += 1
+                    if mp == MP:
+                        break
                     if i == 3:
                         print(
                             'You have had too many unsuccessful attempts, please try again.')
                         quit()
-                    if mp == MP:
-                        break
             else:
                 raise ValueError
         elif name == 'posix':
@@ -171,7 +171,7 @@ def EditEntry(d, t):
             if choice == '0':
                 quit()
             else:
-                if 0 > choice or choice > index+1:
+                if 0 > choice or choice > index + 1:
                     sleep(1)
                     system('clear|cls')
                     print('-' * 100)
@@ -274,7 +274,7 @@ def DelEntry(d, t):
             if choice == '0':
                 quit()
             else:
-                if 0 > choice or choice > index+1:
+                if 0 > choice or choice > index + 1:
                     sleep(1)
                     system('clear|cls')
                     print('-' * 100)
@@ -303,7 +303,7 @@ def DelEntry(d, t):
                 Names.append(_[0])
             for index, val in enumerate(Names):
                 cur.execute(
-                    f"update {d}.{t} set IndexNo={index+1} where Name='{val}'")
+                    f"update {d}.{t} set IndexNo={index + 1} where Name='{val}'")
             conn.commit()
             ### Confirmation ###
             print(f'The entry for {name} has been successfully deleted!')
@@ -343,7 +343,7 @@ def CopyEntry(d, t):
             if choice == '0':
                 quit()
             else:
-                if 0 > choice or choice > index+1:
+                if 0 > choice or choice > index + 1:
                     sleep(1)
                     system('clear|cls')
                     print('-' * 100)
@@ -406,7 +406,6 @@ def CopyEntry(d, t):
 
 ####### Variables ###################
 HOME = "~"
-
 
 ################### Connecting To SQL ###################
 ##### Checking If password is saved #####
