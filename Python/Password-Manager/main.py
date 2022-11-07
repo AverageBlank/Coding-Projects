@@ -109,6 +109,7 @@ def MasterPass():
 def AddEntry(d, t):
     #####* Variables #####
     result = []
+    NameResult = []
 
     #####* Clearing the Screen #####
     system('clear|cls')
@@ -122,12 +123,22 @@ def AddEntry(d, t):
     res = cur.fetchall()
     for _ in res:
         result.append(_)
+    cur.execute(f'select Name from {d}.{t}')
+    res = cur.fetchall()
+    if len(res) != 0:
+        for _ in res:
+            _ = _[0].lower()
+            NameResult.append(_)
+    print(NameResult)
 
     #####* Getting Values #####
     while True:
         name = input('What do you want the entry to be called? ')
         if name == '':
             print('Name cannot be left empty.')
+            continue
+        if name.lower() in NameResult:
+            print('That name already exists.')
             continue
         break
     email = input('What is the Email ID(can be left empty)? ')
@@ -504,5 +515,3 @@ while True:
         DelEntry(database, table)
     elif choice == 4:
         CopyEntry(database, table)
-
-# %%
