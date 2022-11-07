@@ -1,40 +1,43 @@
-################### Imports ###################
-import pymysql                      # For Connecting to MySQL
-from os import name, popen, system  # For Running Commands
-import pyperclip                    # For Copying to Clipboard
-from time import sleep              # For Pausing the Script
+# %%
+###################! Imports ###################
+import pymysql                      #? For Connecting to MySQL
+from os import name, popen, system  #? For Running Commands
+import pyperclip                    #? For Copying to Clipboard
+from time import sleep              #? For Pausing the Script
 
 
-################### Functions ###################
+###################! Functions ###################
+######? Database Checking ######
 def db_check():
-    ##### Variables #####
+    #####* Variables #####
     result = []
 
-    ##### Going Through Databases #####
+    #####* Going Through Databases #####
     cur.execute('show databases')
     res = cur.fetchall()
     for _ in res:
         result.append(_[0])
 
-    ##### Checking if database exists #####
+    #####* Checking if database exists #####
     if 'manager' not in result:
         cur.execute('create database Manager')
 
     return 'Manager'
 
 
+######? Table Checking ######
 def table_check(d):
-    ##### Variables #####
+    #####* Variables #####
     t = 'passwords'
     result = []
 
-    ##### Going Through Database #####
+    #####* Going Through Database #####
     cur.execute(f'show tables from {d}')
     res = cur.fetchall()
     for _ in res:
         result.append(_[0])
 
-    ##### Checking if database exists #####
+    #####* Checking if database exists #####
     if t not in result:
         cur.execute(
             f'Create table {d}.{t}(IndexNo int, Name varchar(244), Email varchar(244), Username varchar(244), Password varchar(244))')
@@ -42,11 +45,12 @@ def table_check(d):
     return t
 
 
+######? Master Password ######
 def MasterPass():
-    ##### Variables #####
+    #####* Variables #####
     i = 0
 
-    ##### Clearing The Screen #####
+    #####* Clearing The Screen #####
     sleep(1)
     system('clear|cls')
     print('-' * 100)
@@ -54,7 +58,7 @@ def MasterPass():
     print('-' * 100)
     print()
 
-    ##### Checking if Master Password is Saved #####
+    #####* Checking if Master Password is Saved #####
     try:
         if name == 'nt':
             chk = popen("cd %userprofile% && dir").read()
@@ -63,7 +67,7 @@ def MasterPass():
             if 'mpformanager' in chk:
                 MP = popen('cd %userprofile% && more mpformanager').read()
                 MP = MP[:-1]
-                ### Asking for Master Password ###
+                ###? Asking for Master Password ###
                 while True:
                     mp = input('Please enter your master password: ')
                     i += 1
@@ -80,7 +84,7 @@ def MasterPass():
             if 'mpformanager' in chk:
                 MP = popen('cd ~/mpformanager').read()
                 MP = MP[:-1]
-                ### Asking for Master Password ###
+                ###? Asking for Master Password ###
                 while True:
                     mp = input('Please enter your master password: ')
                     if mp == MP:
@@ -88,7 +92,7 @@ def MasterPass():
             else:
                 raise ValueError
     except ValueError:
-        ##### Running this if Master Password not saved #####
+        #####* Running this if Master Password not saved #####
         while True:
             mp = input(
                 f"As this is your first time running this script, please enter a Master Password: ")
@@ -101,24 +105,25 @@ def MasterPass():
         file.close()
 
 
+######? Adding Entry ######
 def AddEntry(d, t):
-    ##### Variables #####
+    #####* Variables #####
     result = []
 
-    ##### Clearing the Screen #####
+    #####* Clearing the Screen #####
     system('clear|cls')
     print('-' * 100)
     print('-' * 10, 'This is a Password Manager')
     print('-' * 100)
     print()
 
-    ##### Going Through Table #####
+    #####* Going Through Table #####
     cur.execute(f'select * from {d}.{t}')
     res = cur.fetchall()
     for _ in res:
         result.append(_)
 
-    ##### Getting Values #####
+    #####* Getting Values #####
     while True:
         name = input('What do you want the entry to be called? ')
         if name == '':
@@ -129,7 +134,7 @@ def AddEntry(d, t):
     usrname = input('What is the Username(can be left empty)? ')
     passwd = input('What is the Password? ')
 
-    ##### Adding Values to Table #####
+    #####* Adding Values to Table #####
     cur.execute(
         f"insert into {d}.{t} values({len(result) + 1}, '{name}', '{email}', '{usrname}', '{passwd}')")
     conn.commit()
@@ -137,35 +142,36 @@ def AddEntry(d, t):
     sleep(1)
 
 
+######? Editting Entry ######
 def EditEntry(d, t):
-    ##### Variables #####
+    #####* Variables #####
     result = []
     Name = '-'
     Email = '-'
     Username = '-'
     Passwd = '-'
 
-    ##### Going Through Table #####
+    #####* Going Through Table #####
     cur.execute(f'select * from {d}.{t}')
     res = cur.fetchall()
     for _ in res:
         result.append(_)
 
-    ##### Printing Options #####
+    #####* Printing Options #####
     while True:
-        ### Clearing the Screen ###
+        ###? Clearing the Screen ###
         sleep(1)
         system('clear|cls')
         print('-' * 100)
         print('-' * 10, 'This is a Password Manager')
         print('-' * 100)
         print()
-        ### Options ###
+        ###? Options ###
         for index, value in enumerate(result):
             print(f'Press {index + 1} for {value[1]}')
         print('Press 0 to quit')
         choice = input('Which entry do you want to delete? ')
-        # Checking if choice is valid integer
+        #? Checking if choice is valid integer
         if choice.isdigit():
             choice = int(choice)
             if choice == '0':
@@ -182,8 +188,8 @@ def EditEntry(d, t):
                     continue
             break
 
-    ##### Getting Values #####
-    ### Name ###
+    #####* Getting Values #####
+    ###? Name ###
     while True:
         name = input('Do you want to change the name? ').lower()
         if name not in ['yes', 'no']:
@@ -196,7 +202,7 @@ def EditEntry(d, t):
                     f"update {d}.{t} set Name='{Name}' where IndexNo={choice}")
                 break
         break
-    ### Email ###
+    ###? Email ###
     while True:
         email = input('Do you want to change the email? ').lower()
         if email not in ['yes', 'no']:
@@ -209,7 +215,7 @@ def EditEntry(d, t):
                     f"update {d}.{t} set Email='{Email}' where IndexNo={choice}")
                 break
         break
-    ### Username ###
+    ###? Username ###
     while True:
         username = input('Do you want to change the Username? ').lower()
         if username not in ['yes', 'no']:
@@ -222,7 +228,7 @@ def EditEntry(d, t):
                     f"update {d}.{t} set Username='{Username}' where IndexNo={choice}")
                 break
         break
-    ### Password ###
+    ###? Password ###
     while True:
         passwd = input('Do you want to change the password? ').lower()
         if passwd not in ['yes', 'no']:
@@ -243,32 +249,33 @@ def EditEntry(d, t):
     sleep(1)
 
 
+######? Deleting Entry ######
 def DelEntry(d, t):
-    ##### Variables #####
+    #####* Variables #####
     result = []
     Names = []
 
-    ##### Going Through Table #####
+    #####* Going Through Table #####
     cur.execute(f'select * from {d}.{t}')
     res = cur.fetchall()
     for _ in res:
         result.append(_)
 
-    ##### Printing Options #####
+    #####* Printing Options #####
     while True:
-        ### Clearing the Screen ###
+        ###? Clearing the Screen ###
         sleep(1)
         system('clear|cls')
         print('-' * 100)
         print('-' * 10, 'This is a Password Manager')
         print('-' * 100)
         print()
-        ### Options ###
+        ###? Options ###
         for index, value in enumerate(result):
             print(f'Press {index + 1} for {value[1]}')
         print('Press 0 to quit')
         choice = input('Which password do you want to delete? ')
-        # Checking if choice is valid integer
+        #? Checking if choice is valid integer
         if choice.isdigit():
             choice = int(choice)
             if choice == '0':
@@ -285,7 +292,7 @@ def DelEntry(d, t):
                     continue
             break
 
-    ##### Confirmation #####
+    #####* Confirmation #####
     while True:
         cur.execute(f'select Name from {d}.{t} where IndexNo={choice}')
         name = cur.fetchall()[0][0]
@@ -296,7 +303,7 @@ def DelEntry(d, t):
         elif conf == 'yes':
             cur.execute(f'delete from {d}.{t} where IndexNo={choice}')
             conn.commit()
-            ### Setting Proper Index Numbers ###
+            ###? Setting Proper Index Numbers ###
             cur.execute(f'select Name from {d}.{t}')
             names = cur.fetchall()
             for _ in names:
@@ -305,7 +312,7 @@ def DelEntry(d, t):
                 cur.execute(
                     f"update {d}.{t} set IndexNo={index + 1} where Name='{val}'")
             conn.commit()
-            ### Confirmation ###
+            ###? Confirmation ###
             print(f'The entry for {name} has been successfully deleted!')
             sleep(1)
             break
@@ -313,31 +320,32 @@ def DelEntry(d, t):
             break
 
 
+######? Copying Entry ######
 def CopyEntry(d, t):
-    ##### Variables #####
+    #####* Variables #####
     result = []
 
-    ##### Going Through Table #####
+    #####* Going Through Table #####
     cur.execute(f'select * from {d}.{t}')
     res = cur.fetchall()
     for _ in res:
         result.append(_)
 
-    ##### Printing Options #####
+    #####* Printing Options #####
     while True:
-        ### Clearing the Screen ###
+        ###? Clearing the Screen ###
         sleep(1)
         system('clear|cls')
         print('-' * 100)
         print('-' * 10, 'This is a Password Manager')
         print('-' * 100)
         print()
-        ### Options ###
+        ###? Options ###
         for index, value in enumerate(result):
             print(f'Press {index + 1} for {value[1]}')
         print('Press 0 to quit')
         choice = input('Which entry do you want to copy? ')
-        # Checking if choice is valid integer
+        #? Checking if choice is valid integer
         if choice.isdigit():
             choice = int(choice)
             if choice == '0':
@@ -353,22 +361,21 @@ def CopyEntry(d, t):
                     print('Please enter a valid choice.')
                     continue
             break
-    ##### Copying to Clipboard #####
-    ### Getting Name ###
+    #####* Copying to Clipboard #####
+    ###? Getting Name ###
     cur.execute(f'select Name from {d}.{t} where IndexNo={choice}')
     name = cur.fetchall()[0][0]
     while True:
-        ### Getting What User Wants to Copy to Clipboard ###
+        ###? Getting What User Wants to Copy to Clipboard ###
         conf = input(
             'What do you want to copy(email, username, password)? ').lower()
         if conf not in ['email', 'username', 'password']:
             continue
 
-        ### Email ###
+        ###? Email ###
         elif conf == 'email':
             cur.execute(f'select Email from {d}.{t} where IndexNo={choice}')
             result = cur.fetchall()[0][0]
-            print(result)
             if result == '':
                 print(f'The email in {name} does not exist.')
                 continue
@@ -377,11 +384,10 @@ def CopyEntry(d, t):
             sleep(1)
             break
 
-        ### Username ###
+        ###? Username ###
         elif conf == 'username':
             cur.execute(f'select Username from {d}.{t} where IndexNo={choice}')
             result = cur.fetchall()[0][0]
-            print(result)
             if result == '':
                 print(f'The Username in {name} does not exist.')
                 continue
@@ -390,11 +396,10 @@ def CopyEntry(d, t):
             sleep(1)
             break
 
-        ### Password ###
+        ###? Password ###
         elif conf == 'password':
             cur.execute(f'select Password from {d}.{t} where IndexNo={choice}')
             result = cur.fetchall()[0][0]
-            print(result)
             if result == '':
                 print(f'The Password in {name} does not exist.')
                 continue
@@ -404,11 +409,8 @@ def CopyEntry(d, t):
             break
 
 
-####### Variables ###################
-HOME = "~"
-
-################### Connecting To SQL ###################
-##### Checking If password is saved #####
+###################! Connecting To SQL ###################
+#####* Checking If password is saved #####
 try:
     if name == 'nt':
         chk = popen("cd %userprofile% && dir").read()
@@ -427,7 +429,7 @@ try:
         else:
             raise ValueError
 except ValueError:
-    ##### Clearing The Screen #####
+    #####* Clearing The Screen #####
     sleep(1)
     system('clear|cls')
     print('-' * 100)
@@ -435,25 +437,25 @@ except ValueError:
     print('-' * 100)
     print()
 
-    ##### Running this if password is not saved #####
+    #####* Running this if password is not saved #####
     while True:
         p = input('Please type in your SQL Password: ')
         try:
-            ## Connecting ##
+            ###? Connecting ###
             conn = pymysql.connect(
                 user='root',
                 host='localhost',
                 password=p
             )
             cur = conn.cursor()
-            ### Saving password ###
+            ###? Saving password ###
             a = open(CWD + 'formanager', 'w')
             a.write(p)
             a.close()
             break
         except:
             print('The password was wrong, please try again.')
-## Connecting ##
+###? Connecting ###
 conn = pymysql.connect(
     user='root',
     host='localhost',
@@ -461,37 +463,37 @@ conn = pymysql.connect(
 )
 cur = conn.cursor()
 
-################### Printing Options ###################
-##### Checks #####
-# Checking if the database required exists
+###################! Printing Options ###################
+#####? Checks #####
+#* Checking if the database required exists
 database = db_check()
-# Checking if the table required exists
+#* Checking if the table required exists
 table = table_check(database)
-# Master Password
+#* Master Password
 MasterPass()
 
-##### Printing Options #####
+#####? Printing Options #####
 while True:
-    #### Printing what the script does ####
+    ####* Printing what the script does ####
     system('clear|cls')
     print('-' * 100)
     print('-' * 10, 'This is a Password Manager')
     print('-' * 100)
     print()
-    #### Printing Options ####
+    ####* Printing Options ####
     print('Press 1 to Add Entry')
     print('Press 2 to Edit Entry')
     print('Press 3 to Delete an Entry')
     print('Press 4 to Copy an Entry')
     print('Press 0 to quit')
     choice = input('What is your choice? ')
-    # Checking if choice is valid integer
+    #? Checking if choice is valid integer
     if choice.isdigit():
         choice = int(choice)
         if 0 > choice or choice >= 5:
             continue
 
-    ####### Calling Functions #######
+    #######? Calling Functions #######
     if choice == 0:
         quit()
     elif choice == 1:
@@ -502,3 +504,5 @@ while True:
         DelEntry(database, table)
     elif choice == 4:
         CopyEntry(database, table)
+
+# %%
