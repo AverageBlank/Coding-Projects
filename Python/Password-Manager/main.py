@@ -1,16 +1,16 @@
 # %%
 ###################! Imports ###################
-# ? For Connecting to MySQL
-import pymysql
-
 # ? For Running Commands
 from os import name, popen, system
 
-# ? For Copying to Clipboard
-import pyperclip
-
 # ? For Pausing the Script
 from time import sleep
+
+# ? For Connecting to MySQL
+import pymysql
+
+# ? For Copying to Clipboard
+import pyperclip
 
 
 ###################! Functions ###################
