@@ -1,7 +1,13 @@
 # %%
 ###################! Imports ###################
+# ? For Generating Password
+import string
+
 # ? For Running Commands
 from os import name, popen, system
+
+# ? For Generating Password
+from random import choice as randchoice
 
 # ? For Pausing the Script
 from time import sleep
@@ -115,6 +121,33 @@ def MasterPass():
         file.close()
 
 
+######? Generating Passwords ######
+def GenPass(p):
+    genop = ""
+    while True:
+        gen = input("Do you want to generate a password? ").lower()
+        if gen == "yes":
+            while True:
+                try:
+                    genlen = int(input("How long should the password be? "))
+                    if genlen <= 0:
+                        raise ValueError
+                    break
+                except:
+                    print("Please enter a valid positive number.")
+            for _ in range(genlen):
+                genop += randchoice(
+                    string.ascii_letters + string.digits + string.punctuation
+                )
+
+            print(f"The generated password is {genop}")
+            return genop
+        elif gen == "no":
+            return input(p)
+        else:
+            print("Please only enter either yes or no.")
+
+
 ######? Adding Entry ######
 def AddEntry(d, t):
     #####* Variables #####
@@ -152,7 +185,7 @@ def AddEntry(d, t):
         break
     email = input("What is the Email ID(can be left empty)? ")
     usrname = input("What is the Username(can be left empty)? ")
-    passwd = input("What is the Password? ")
+    passwd = GenPass("What is the Password? ")
 
     #####* Adding Values to Table #####
     cur.execute(
@@ -258,7 +291,7 @@ def EditEntry(d, t):
             continue
         elif passwd == "yes":
             while True:
-                Passwd = input("What should the password be? ")
+                Passwd = GenPass("What should the password be? ")
                 cur.execute(
                     f"update {d}.{t} set Password='{Passwd}' where IndexNo={choice}"
                 )
@@ -518,3 +551,6 @@ while True:
         DelEntry(database, table)
     elif choice == 4:
         CopyEntry(database, table)
+
+# %%
+""
