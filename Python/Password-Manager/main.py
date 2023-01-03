@@ -141,6 +141,7 @@ def GenPass(p):
                 )
 
             print(f"The generated password is {genop}")
+            sleep(5)
             return genop
         elif gen == "no":
             return input(p)
